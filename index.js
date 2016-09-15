@@ -3,21 +3,36 @@ var tests = [
     ['promise', require('./promise')],
     ['righto-parallel', require('./righto-parallel')],
     ['promise-parallel', require('./promise-parallel')],
+    ['righto-muti-dep', require('./righto-muti-dep')],
+    ['promise-multi-dep', require('./promise-multi-dep')],
 
     ['righto repeat', require('./righto')],
     ['promise repeat', require('./promise')],
     ['righto-parallel repeat', require('./righto-parallel')],
-    ['promise-parallel repeat', require('./promise-parallel')]
+    ['promise-parallel repeat', require('./promise-parallel')],
+    ['righto-muti-dep repeat', require('./righto-muti-dep')],
+    ['promise-multi-dep repeat', require('./promise-multi-dep')]
 ];
 
 // avoid noise with other libs
-var series = require('foreign').series;
+var series = require('foreign').series,
+    table = require('console.table'),
+    iterations = 10000,
+    results = [];
 
-setTimeout(function(){
-    series(function(test, callback){
-        console.log('\n', test[0]);
-        test[1](1000, callback);
-    }, tests, function(){
-        console.log('done');
+console.log('running ' + iterations + ' iterations of each test...');
+
+series(function(test, callback){
+    test[1](iterations, function(error, result){
+        result.name = test[0];
+        results.push({
+            name: test[0],
+            initTime: result.initTime,
+            executeTime: result.executeTime
+        });
+        callback();
     });
-}, 5000);
+}, tests, function(){
+    console.table(results);
+    console.log('done');
+});

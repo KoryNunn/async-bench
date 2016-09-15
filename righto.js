@@ -12,13 +12,13 @@ module.exports = function(iterations, callback){
     }
 
     var executeStart = Date.now();
-    console.log('init time: ', executeStart - initStart);
+    var initTime = (executeStart - initStart);
 
     last(function(){
-        console.log(counter.count);
+
         var completedTime = Date.now();
-        console.log('execute time: ', completedTime - executeStart);
-        console.log('total time: ', completedTime - initStart);
-        callback();
+        var executeTime = (completedTime - executeStart);
+
+        callback(null, {initTime, executeTime})
     });
 }

@@ -5,18 +5,19 @@ module.exports = function(iterations, callback){
     var counter = after(),
         initStart = Date.now();
 
-    var tasks = [];
+    var last = righto(counter);
 
     for(var i = 0; i < iterations; i++){
-        tasks.push(new Promise(counter));
+        var a = righto(counter, righto.after(last));
+        var b = righto(counter, righto.after(last));
+        var c = righto(counter, righto.after(last));
+        last = righto.all(a, b, c);
     }
-
-    var doAll = Promise.all(tasks);
 
     var executeStart = Date.now();
     var initTime = (executeStart - initStart);
 
-    doAll.then(function(){
+    last(function(){
 
         var completedTime = Date.now();
         var executeTime = (completedTime - executeStart);

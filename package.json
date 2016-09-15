@@ -9,8 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "console.table": "^0.7.0",
     "foreign": "^1.0.4",
-    "righto": "^1.12.0",
+    "righto": "^1.13.0",
     "tape": "^4.6.0"
   }
 }
